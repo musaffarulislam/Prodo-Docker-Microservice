@@ -8,7 +8,7 @@ export class ProductController {
 
     private product_service: ProductService = new ProductService();
 
-    public create_product(req: Request, res: Response) {
+    public async create_product(req: Request, res: Response) {
         if(req.body.name && 
             req.body.discription &&
             req.body.price){
@@ -22,29 +22,27 @@ export class ProductController {
                         modification_note: 'New user created'
                     }]
                 }
-                this.product_service.createProduct(product_params,(err: any, product_data: IProduct)=>{
-                    if (err) {
-                        mongoError(err, res);
-                    } else {
-                        successResponse('create Product successfull', product_data, res);
-                    }
-                } )
-            }else {
+                try {
+                    const savedProduct = await this.product_service.createProduct(product_params);
+                    successResponse('create Product successfull', savedProduct, res);
+                } catch (err) {
+                    mongoError(err, res);
+                }
+            } else {
                 // error response if some fields are missing in request body
                 insufficientParameters(res);
             }
     }
-
+    
     public get_product(req: Request, res: Response) {
         if (req.params.id) {
             const product_filter = { _id: req.params.id };
-            this.product_service.filterProduct(product_filter, (err: any, product_data: IProduct) => {
-                if (err) {
-                    mongoError(err, res);
-                } else {
-                    successResponse('get product successfull', product_data, res);
-                }
-            });
+            try {
+                const product_data = this.product_service.filterProduct(product_filter);
+                successResponse('get product successfull', product_data, res);
+            } catch (err) {
+                mongoError(err, res);
+            }
         } else {
             insufficientParameters(res);
         }

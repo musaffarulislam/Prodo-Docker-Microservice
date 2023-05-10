@@ -3,13 +3,14 @@ import products from './schema';
 
 export default class ProductService {
 
-    public createProduct(product_params: IProduct, callback: any) {
+    public async createProduct(product_params: IProduct) {
         const _session = new products(product_params);
-        _session.save(callback)
+        await _session.save();
+        return _session;
     }
 
-    public filterProduct(query: any, callback: any){
-        products.findOne(query, callback);
+    public filterProduct(query: any){
+        products.findOne(query);
     }
    
     public updateProduct(product_params: IProduct, callback: any){

@@ -1,0 +1,54 @@
+# # version: "3.8"
+# # services:
+# #   mongo:
+# #     container_name: mongoproduct
+# #     image: mongo
+# #     env_file:
+# #       - ./.env
+# #     expose:
+# #       - 27017
+# #     ports:
+# #       - "27020:27017"
+# #     volumes:
+# #       - ./data:/data/db
+# #     networks:
+# #       - mongo-test-net
+      
+# #   productservice:
+# #     container_name: productservice
+# #     image: productservice
+# #     restart: always
+# #     build: .
+# #     environment:
+# #       MONGO_URL: mongodb://mongo:27017/mydatabase
+# #     ports:
+# #       - "4000:4000"
+# #     env_file:
+# #       - ./.env
+# #     depends_on:
+# #       - mongo
+
+# # networks:
+# #   mongo-test-net:
+# version: "3.8"
+# services:
+#     product-db:
+#       container_name: product-db
+#       image: mongo
+#       ports:
+#         - 27017:27017
+#       restart: always
+    
+#     product-service:
+#       container_name: product-service
+#       build: .
+#       ports:
+#         - 4000:4000
+#       volumes:
+#         - ./product-service:/app
+#       environment:
+#         - PORT=4000
+#         - MONGO_URI=mongodb://product-db:27017/products
+#       depends_on:
+#         - product-db
+#       restart: always

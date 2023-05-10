@@ -1,22 +1,22 @@
-version: "3.8"
-services:
-  userservice:
-    container_name: userservise
-    image: userservice
-    restart: always
-    build: .
-    ports:
-      - "3000:3000"
-    env_file:
-      - ./.env
-    links:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo
-    env_file:
-      - ./.env
-    volumes:
-      - ./data:/data/db
-    ports:
-      - "27017:27017"
+# version: "3.8"
+# services:
+#   userdb:
+#     container_name: userdb
+#     image: mongo
+#     ports:
+#       - "27018:27017"
+#     restart: always
+#   userservice:
+#     container_name: userservice
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#         - ./userservice:/app
+#     environment:
+#         - PORT=3000
+#         - MONGO_URI=mongodb://userdb:27017/users
+#     depends_on:
+#       - userdb
+#     restart: always
+    

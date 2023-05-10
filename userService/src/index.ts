@@ -2,8 +2,8 @@ import express,{Application, Request, Response, NextFunction} from 'express'
 import morgan from 'morgan'
 import userRouter from './routes/userRoutes';
 import connectDB from './config/mongodbConnection';
-import dotenv from 'dotenv'
-dotenv.config()
+// import dotenv from 'dotenv'
+// dotenv.config()
 connectDB()
 
 const app:Application = express()

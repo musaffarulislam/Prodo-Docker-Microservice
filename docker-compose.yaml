@@ -1,20 +1,44 @@
 version: "3"
 services:
-  userservice:
-    container_name: userservise
-    image: userservice
+  userdb:
+    container_name: userdb
+    image: mongo
+    ports:
+      - "27018:27017"
     restart: always
-    build:
-      context: .
-      dockerfile: userService/Dockerfile
+
+  product-db:
+    container_name: product-db
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: always
+
+  userservice:
+    container_name: userservice
+    build: ./userService
     ports:
       - "3000:3000"
-    links:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo
     volumes:
-      - ./data:/data/db
+        - ./userservice:/app
+    environment:
+        - PORT=3000
+        - MONGO_URI=mongodb://userdb:27017/users
+    depends_on:
+      - userdb
+    restart: always
+      
+    
+  product-service:
+    container_name: product-service
+    build: ./productService
     ports:
-      - "27017:27017"
+      - 4000:4000
+    volumes:
+      - ./product-service:/app
+    environment:
+      - PORT=4000
+      - MONGO_URI=mongodb://product-db:27017/products
+    depends_on:
+      - product-db
+    restart: always
